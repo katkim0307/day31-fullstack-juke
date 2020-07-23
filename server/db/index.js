@@ -9,11 +9,9 @@ Artist.hasMany(Album);
 Album.belongsTo(Artist);// artistId
 Artist.hasMany(Song);
 Song.belongsTo(Artist); // artistId
-Album.hasMany(Song);    
+Album.hasMany(Song);
 Song.belongsTo(Album);  // albumId
 
-module.exports = {
-  db, Album, Artist, Song
-  // Include your models in your module.exports as well!
-  // The seed file expects to find them there!
-}
+// Include your models in your module.exports as well!
+// The seed file expects to find them there!
+module.exports = { db, Album, Artist, Song }

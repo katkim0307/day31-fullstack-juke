@@ -5,7 +5,9 @@ const { Album, Artist, Song } = require('../db');
 // ALBUMS ROUTE
 router.get('/albums', async (req, res, next) => {
     try {
-        const allAlbums = await Album.findAll();
+        const allAlbums = await Album.findAll({
+            include: [Artist],
+        });
         res.send(allAlbums);
     } catch (err) { next(err) }
 });
@@ -13,11 +15,8 @@ router.get('/albums', async (req, res, next) => {
 // INDIVIDUAL ALBUM ROUTE BY ALBUM ID - Eager Loading
 router.get('/albums/:albumId', async (req, res, next) => {
     try {
-        const album = await Album.findOne({
-            where: {
-                id: req.params.albumId,
-            },
-            include: Song,
+        const album = await Album.findById(req.params.albumId, {
+            include: [Artist, Song],
         });
         res.send(album);
     } catch (err) { next(err) }

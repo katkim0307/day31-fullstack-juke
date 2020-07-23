@@ -16,7 +16,7 @@ router.get('/albums', async (req, res, next) => {
 router.get('/albums/:albumId', async (req, res, next) => {
     try {
         const album = await Album.findById(req.params.albumId, {
-            include: [Artist, Song],
+            include: [Artist, {model: Song, include: [Artist]}],
         });
         res.send(album);
     } catch (err) { next(err) }
@@ -25,17 +25,16 @@ router.get('/albums/:albumId', async (req, res, next) => {
 // ARTISTS ROUTE
 router.get('/artists', async (req, res, next) => {
     try {
-        const allArtists = await Artist.findAll();
+        const allArtists = await Artist.findAll({
+            include: [Album],
+        });
         res.send(allArtists);
     } catch (err) { next(err) }
 });
 
 router.get('/artists/:artistId', async (req, res, next) => {
     try {
-        const artist = await Artist.findOne({
-            where: {
-                id: req.params.artistId,
-            },
+        const artist = await Artist.findById(req.params.artistId, {
             include: Album,
         });
         res.send(artist);

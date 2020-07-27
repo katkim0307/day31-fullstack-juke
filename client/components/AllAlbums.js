@@ -1,24 +1,22 @@
 import React from 'react';
-import '../public/style.css';
+// import '../../public/style.css';
 
-const AllAlbums = () => {
+const AllAlbums = (props) => {
+    // console.log(props);
     return (
-        <div class='container'>
+        <div className='container'>
             <div id='albums' className='row wrap'>
-                <div class='album'>
-                    <a>
-                        <img src='default-album.jpg' />
-                        <p>ALBUM 1</p>
-                        <small>Artist Name</small>
-                    </a>
-                </div>
-                <div className='album'>
-                    <a>
-                        <img src='default-album.jpg' />
-                        <p>ALBUM 2</p>
-                        <small>Artist Name</small>
-                    </a>
-                </div>
+                {props.albums.map(album => {
+                    return (
+                        <div className='album' key={album.id}>
+                            <a>
+                                <img src={album.artworkUrl} />
+                                <p>{album.name}</p>
+                                <small>{album.artist.name}</small>
+                            </a>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     );

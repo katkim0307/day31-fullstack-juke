@@ -1,5 +1,5 @@
 import React from 'react';
-import '../public/style.css';
+// import '../../public/style.css';
 import { Sidebar, Player, AllAlbums } from './components'
 
 export default class Main extends React.Component {
@@ -23,7 +23,7 @@ export default class Main extends React.Component {
           "artworkUrl": "default-album.jpg",
           "artistId": 1,
           "artist": {
-       "id": 1,
+            "id": 1,
             "name": "The Crash Test Dummies"
           }
         }
@@ -32,12 +32,12 @@ export default class Main extends React.Component {
   };
 
   render() {
-    const { albums } = this.state;
+    const { dummyData } = this.state;
     return (
       <div id='main' className='row container'>
         {/* The music starts here! */}
         <Sidebar />
-        <AllAlbums />
+        <AllAlbums albums={dummyData}/>
         <Player />
       </div>
     );

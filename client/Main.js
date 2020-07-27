@@ -35,7 +35,6 @@ export default class Main extends React.Component {
     const { dummyData } = this.state;
     return (
       <div id='main' className='row container'>
-        {/* The music starts here! */}
         <Sidebar />
         <AllAlbums albums={dummyData}/>
         <Player />

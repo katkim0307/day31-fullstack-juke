@@ -2,7 +2,6 @@ import React from 'react';
 // import '../../public/style.css';
 
 const AllAlbums = (props) => {
-    // console.log(props);
     return (
         <div className='container'>
             <div id='albums' className='row wrap'>

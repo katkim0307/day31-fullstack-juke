@@ -6,37 +6,37 @@ export default class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      dummyData: [
-        {
-          "id": 1,
-          "name": "No Dummy",
-          "artworkUrl": "default-album.jpg",
-          "artistId": 1,
-          "artist": {
-            "id": 1,
-            "name": "The Crash Test Dummies"
-          }
-        },
-        {
-          "id": 2,
-          "name": "I React to State",
-          "artworkUrl": "default-album.jpg",
-          "artistId": 1,
-          "artist": {
-            "id": 1,
-            "name": "The Crash Test Dummies"
-          }
-        }
-       ],
+      albums: [],
+      artists: [],
+      loading: true,
     }
   };
 
+  async componentDidMount() {
+    try {
+      const albumsRes = await fetch('/api/albums');
+      const albumsData = await albumsRes.json();
+      const artistsRes = await fetch('/api/artists');
+      const artistsData = await artistsRes.json();
+
+      this.setState({
+        albums: albumsData,
+        artists: artistsData,
+        loading: false,
+      })
+    } catch (err) { console.error('ERROR: ', err); }
+  };
+
   render() {
-    const { dummyData } = this.state;
+    const { albums, artists, loading } = this.state;
+    if (albums.length === 0) { return <div>No Album Found!</div> }
+    if (artists.length === 0) { return <div>No Artist Found!</div> }
+    if (loading) { return <div>Loading...</div> }
+    
     return (
       <div id='main' className='row container'>
         <Sidebar />
-        <AllAlbums albums={dummyData}/>
+        <AllAlbums albums={albums} />
         <Player />
       </div>
     );

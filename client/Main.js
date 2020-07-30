@@ -1,6 +1,5 @@
 import React from 'react';
-// import '../../public/style.css';
-import { Sidebar, Player, AllAlbums } from './components'
+import { Sidebar, Player, AllAlbums, SingleAlbum, Songs } from './components'
 
 export default class Main extends React.Component {
   constructor() {
@@ -14,17 +13,17 @@ export default class Main extends React.Component {
 
   async componentDidMount() {
     try {
-      const albumsRes = await fetch('/api/albums');
+      const albumsRes = await fetch('/api/albums', { method: 'GET' });
       const albumsData = await albumsRes.json();
-      const artistsRes = await fetch('/api/artists');
+      const artistsRes = await fetch('/api/artists', { method: 'GET' });
       const artistsData = await artistsRes.json();
 
       this.setState({
         albums: albumsData,
         artists: artistsData,
         loading: false,
-      })
-    } catch (err) { console.error('ERROR: ', err); }
+      });
+    } catch (err) { console.error('ERROR: ', err.stack); }
   };
 
   render() {
@@ -32,7 +31,7 @@ export default class Main extends React.Component {
     if (albums.length === 0) { return <div>No Album Found!</div> }
     if (artists.length === 0) { return <div>No Artist Found!</div> }
     if (loading) { return <div>Loading...</div> }
-    
+    console.log(albums);
     return (
       <div id='main' className='row container'>
         <Sidebar />

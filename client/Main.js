@@ -11,6 +11,7 @@ export default class Main extends React.Component {
       singleAlbum: {},
       loading: true,
     }
+    this.goBackToAllAlbums = this.goBackToAllAlbums.bind(this);
     this.viewSingleAlbum = this.viewSingleAlbum.bind(this);
   };
 
@@ -28,6 +29,12 @@ export default class Main extends React.Component {
       })
       console.log(this.state.singleAlbum);
     } catch (err) { console.error('ERROR: ', err); }
+  };
+
+  goBackToAllAlbums() {
+    this.setState({
+      singleAlbum: {},
+    });
   };
 
   async viewSingleAlbum(albumId) {
@@ -51,11 +58,11 @@ export default class Main extends React.Component {
 
     return (
       <div id='main' className='row container'>
-        <Sidebar />
+        <Sidebar goBackToAllAlbums={this.goBackToAllAlbums} />
         {/* IF SINGLE ALBUM IS NOT POPULATED, STAY ON ALLALBUMS, OTHERWISE GO TO SINGLEALBUM */}
         {Object.keys(singleAlbum).length === 0 ?
-        <AllAlbums albums={albums} viewSingleAlbum={this.viewSingleAlbum} />
-        : <SingleAlbum singleAlbum={singleAlbum} /> }
+          <AllAlbums albums={albums} viewSingleAlbum={this.viewSingleAlbum} />
+          : <SingleAlbum singleAlbum={singleAlbum} />}
         <Player />
       </div>
     );

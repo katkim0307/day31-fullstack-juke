@@ -1,6 +1,7 @@
 import React from 'react';
-// import '../../public/style.css';
 import { Sidebar, Player, AllAlbums, SingleAlbum, Songs } from './components'
+
+const audio = document.createElement('audio');
 
 export default class Main extends React.Component {
   constructor() {
@@ -13,6 +14,7 @@ export default class Main extends React.Component {
     }
     this.goBackToAllAlbums = this.goBackToAllAlbums.bind(this);
     this.viewSingleAlbum = this.viewSingleAlbum.bind(this);
+    this.playSong = this.playSong.bind(this);
   };
 
   async componentDidMount() {
@@ -50,6 +52,12 @@ export default class Main extends React.Component {
     }
   };
 
+  playSong(songUrl) {
+    audio.src = songUrl;
+    audio.load();
+    audio.play();
+  };
+
   render() {
     const { albums, singleAlbum, artists, loading } = this.state;
     if (albums.length === 0) { return <div>No Album Found!</div> }
@@ -62,7 +70,7 @@ export default class Main extends React.Component {
         {/* IF SINGLE ALBUM IS NOT POPULATED, STAY ON ALLALBUMS, OTHERWISE GO TO SINGLEALBUM */}
         {Object.keys(singleAlbum).length === 0 ?
           <AllAlbums albums={albums} viewSingleAlbum={this.viewSingleAlbum} />
-          : <SingleAlbum singleAlbum={singleAlbum} />}
+          : <SingleAlbum singleAlbum={singleAlbum} playSong={this.playSong} />}
         <Player />
       </div>
     );

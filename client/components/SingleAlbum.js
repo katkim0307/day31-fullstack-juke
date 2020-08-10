@@ -15,7 +15,7 @@ export default function SingleAlbum (props) {
                 <small>{props.singleAlbum.artist.name}</small>
               </a>
             </div>
-            <Songs songs={props.singleAlbum.songs} artist={props.singleAlbum.artist}/>
+            <Songs songs={props.singleAlbum.songs} artist={props.singleAlbum.artist} playSong={props.playSong}/>
           </div>
 
         </div>

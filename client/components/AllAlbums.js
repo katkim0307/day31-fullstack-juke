@@ -2,6 +2,7 @@ import React from 'react';
 // import '../../public/style.css';
 
 const AllAlbums = (props) => {
+    console.log(props);
     return (
         <div className='container'>
             <div id='albums' className='row wrap'>
@@ -9,7 +10,7 @@ const AllAlbums = (props) => {
                     return (
                         <div className='album' key={album.id}>
                             <a>
-                                <img src={album.artworkUrl} />
+                                <img src={album.artworkUrl} onClick={() => props.viewSingleAlbum(album.id)}/>
                                 <p>{album.name}</p>
                                 <small>{album.artist.name}</small>
                             </a>

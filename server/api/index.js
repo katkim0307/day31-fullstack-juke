@@ -15,8 +15,16 @@ router.get('/albums', async (req, res, next) => {
 // INDIVIDUAL ALBUM ROUTE BY ALBUM ID - Eager Loading
 router.get('/albums/:albumId', async (req, res, next) => {
     try {
-        const album = await Album.findById(req.params.albumId, {
-            include: [Artist, {model: Song, include: [Artist]}],
+        const album = await Album.findByPk(req.params.albumId, {
+            include: [
+                { model: Artist },
+                {
+                    model: Song,
+                    where: {
+                        albumId: req.params.albumId,
+                    }
+                }
+            ],
         });
         res.send(album);
     } catch (err) { next(err) }

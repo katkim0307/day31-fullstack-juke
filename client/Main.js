@@ -18,6 +18,8 @@ export default class Main extends React.Component {
     this.playSong = this.playSong.bind(this);
     this.handlePlayButton = this.handlePlayButton.bind(this);
     this.pause = this.pause.bind(this);
+    this.nextSong = this.nextSong.bind(this);
+    this.prevSong = this.prevSong.bind(this);
   };
 
   async componentDidMount() {
@@ -33,7 +35,12 @@ export default class Main extends React.Component {
         loading: false,
       })
       console.log(this.state.singleAlbum);
-    } catch (err) { console.error('ERROR: ', err); }
+
+      audio.addEventListener("ended", () => nextSong());
+    }
+    catch (err) {
+      console.error('ERROR: ', err);
+    }
   };
 
   goBackToAllAlbums() {
@@ -71,6 +78,45 @@ export default class Main extends React.Component {
     audio.pause();
   };
 
+  nextSong() {
+    const { singleAlbum, currentSong } = this.state;
+    console.log(singleAlbum.songs);
+    const playlist = singleAlbum.songs;
+    const currentSongIdx = playlist.findIndex(song => song.id === currentSong);
+    const nextSongIdx = playlist[currentSongIdx + 1];
+
+    if (currentSongIdx !== playlist.length - 1) {
+      this.playSong(nextSongIdx.audioUrl, nextSongIdx.id);
+      this.setState({
+        currentSong: nextSongIdx.id,
+      });
+    } else {
+      this.playSong(playlist[0].audioUrl, playlist[0].id);
+      this.setState({
+        currentSong: playlist[0].id,
+      })
+    }
+  };
+
+  prevSong() {
+    const { singleAlbum, currentSong } = this.state;
+    const playlist = singleAlbum.songs;
+    const currentSongIdx = playlist.findIndex(song => song.id === currentSong);
+    const prevSongIdx = playlist[currentSongIdx - 1];
+
+    if (currentSongIdx !== 0) {
+      this.playSong(prevSongIdx.audioUrl, prevSongIdx.id);
+      this.setState({
+        currentSong: prevSongIdx.id,
+      });
+    } else {
+      this.playSong(playlist[playlist.length-1].audioUrl, playlist[playlist.length-1].id);
+      this.setState({
+        currentSong: playlist[playlist.length-1].id,
+      })
+    }
+  };
+
   render() {
     const { albums, singleAlbum, currentSong, artists, loading } = this.state;
     if (albums.length === 0) { return <div>No Album Found!</div> }
@@ -89,7 +135,7 @@ export default class Main extends React.Component {
             handlePlayButton={this.handlePlayButton}
             currentSong={currentSong}
             pause={this.pause} />}
-        {currentSong !== null ? <Player playSong={this.playSong} handlePlayButton={this.handlePlayButton} pause={this.pause}/> : ''}
+        {currentSong !== null ? <Player playSong={this.playSong} handlePlayButton={this.handlePlayButton} pause={this.pause} nextSong={this.nextSong} prevSong={this.prevSong} /> : ''}
       </div>
     );
   };

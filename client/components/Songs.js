@@ -14,7 +14,8 @@ export default function Song(props) {
                 {props.songs.map(song => {
                     return (
                         <tr key={song.id} className={song.id === props.currentSong ? 'active' : ''}>
-                            <td><i className={props.currentSong !== song.id ? 'fa fa-play-circle' : ''} onClick={() => { props.playSong(song.audioUrl, song.id); props.handlePlayButton(song.id) }} /></td>
+                            <td><i className={props.currentSong !== song.id ? 'fa fa-play-circle' : 'fa fa-pause-circle'}
+                                onClick={song.id !== props.currentSong ? () => { props.playSong(song.audioUrl, song.id); props.handlePlayButton(song.id) } : () => { props.pause(); props.handlePlayButton(null) }} /></td>
                             <td>{song.id}</td>
                             <td>{song.name}</td>
                             <td>{props.artist.name}</td>

@@ -64,16 +64,12 @@ export default class Main extends React.Component {
   handlePlayButton(songId) {
     this.setState({
       currentSong: songId,
-    })
-  }
+    });
+  };
 
-  async pause() {
-    try {
-
-    } catch (err) {
-      console.error('ERROR: ', err);
-    }
-  }
+  pause() {
+    audio.pause();
+  };
 
   render() {
     const { albums, singleAlbum, currentSong, artists, loading } = this.state;
@@ -87,8 +83,13 @@ export default class Main extends React.Component {
         {/* IF SINGLE ALBUM IS NOT POPULATED, STAY ON ALLALBUMS, OTHERWISE GO TO SINGLEALBUM */}
         {Object.keys(singleAlbum).length === 0 ?
           <AllAlbums albums={albums} viewSingleAlbum={this.viewSingleAlbum} />
-          : <SingleAlbum singleAlbum={singleAlbum} playSong={this.playSong} handlePlayButton={this.handlePlayButton} currentSong={currentSong} />}
-        <Player />
+          : <SingleAlbum
+            singleAlbum={singleAlbum}
+            playSong={this.playSong}
+            handlePlayButton={this.handlePlayButton}
+            currentSong={currentSong}
+            pause={this.pause} />}
+        {currentSong !== null ? <Player playSong={this.playSong} handlePlayButton={this.handlePlayButton} pause={this.pause}/> : ''}
       </div>
     );
   };

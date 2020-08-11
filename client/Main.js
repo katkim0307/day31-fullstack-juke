@@ -11,10 +11,13 @@ export default class Main extends React.Component {
       artists: [],
       singleAlbum: {},
       loading: true,
+      currentSong: null,
     }
     this.goBackToAllAlbums = this.goBackToAllAlbums.bind(this);
     this.viewSingleAlbum = this.viewSingleAlbum.bind(this);
     this.playSong = this.playSong.bind(this);
+    this.handlePlayButton = this.handlePlayButton.bind(this);
+    this.pause = this.pause.bind(this);
   };
 
   async componentDidMount() {
@@ -52,14 +55,28 @@ export default class Main extends React.Component {
     }
   };
 
-  playSong(songUrl) {
+  playSong(songUrl, songId) {
     audio.src = songUrl;
     audio.load();
     audio.play();
   };
 
+  handlePlayButton(songId) {
+    this.setState({
+      currentSong: songId,
+    })
+  }
+
+  async pause() {
+    try {
+
+    } catch (err) {
+      console.error('ERROR: ', err);
+    }
+  }
+
   render() {
-    const { albums, singleAlbum, artists, loading } = this.state;
+    const { albums, singleAlbum, currentSong, artists, loading } = this.state;
     if (albums.length === 0) { return <div>No Album Found!</div> }
     if (artists.length === 0) { return <div>No Artist Found!</div> }
     if (loading) { return <div>Loading...</div> }
@@ -70,7 +87,7 @@ export default class Main extends React.Component {
         {/* IF SINGLE ALBUM IS NOT POPULATED, STAY ON ALLALBUMS, OTHERWISE GO TO SINGLEALBUM */}
         {Object.keys(singleAlbum).length === 0 ?
           <AllAlbums albums={albums} viewSingleAlbum={this.viewSingleAlbum} />
-          : <SingleAlbum singleAlbum={singleAlbum} playSong={this.playSong} />}
+          : <SingleAlbum singleAlbum={singleAlbum} playSong={this.playSong} handlePlayButton={this.handlePlayButton} currentSong={currentSong} />}
         <Player />
       </div>
     );
